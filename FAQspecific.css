@@ -1,0 +1,22 @@
+.FAQlist {
+	list-style: none;
+}
+
+#FAQtable {
+	margin-left: 45px;
+	border-collapse: collapse;
+}
+
+#FAQtable td {
+	border: 1px solid black;
+	padding: 4px;
+	min-width: 50px;
+}
+
+.money {
+	text-align: right;
+}
+
+.moneyNone {
+	text-align: center;
+}
