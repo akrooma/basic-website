@@ -3,10 +3,10 @@
 var pictures = new Array();
 
 //Massiivi elementide väärtustamine.
-pictures[0] = "../Legit/img/shopBanner/banner1.png";
-pictures[1] = "../Legit/img/shopBanner/banner2.png";
-pictures[2] = "../Legit/img/shopBanner/banner3.png";
-pictures[3] = "../Legit/img/shopBanner/banner4.png";
+pictures[0] = "img/shopBanner/banner1.png";
+pictures[1] = "img/shopBanner/banner2.png";
+pictures[2] = "img/shopBanner/banner3.png";
+pictures[3] = "img/shopBanner/banner4.png";
 
 //Massiivi viimase elemendi indeks.
 var countTo = pictures.length-1;
