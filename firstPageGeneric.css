@@ -10,7 +10,7 @@ p {
 	margin: 0;
 }
 
-/* Kolme suure divi css */
+/* Nelja suure divi css */
 #banner-wrap {
 	height: 200px;
 }
@@ -28,6 +28,14 @@ p {
 	margin: auto;
 	background-color: whitesmoke;
 	word-wrap: break-word;
+}
+
+#footer-wrap {
+	margin-top: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	background-color: yellow;
+	text-align: center;
 }
 
 

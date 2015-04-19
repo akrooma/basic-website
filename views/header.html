@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="firstPageGeneric.css">
+    <?php
+        if((!isset($_GET["mode"])) || ($_GET["mode"]=="firstPage")){
+            echo '<link rel="stylesheet" type="text/css" href="firstPageSpecific.css">';
+        }
+    ?>
+    <link rel="stylesheet" type="text/css" href="FAQspecific.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="genericJS.js"></script>
+    <script type="text/javascript" src="shopBannerChanger.js"></script>
+    <title>
+        <?php
+            if(!isset($_GET["mode"])){
+                echo "firstPage";
+            } else {
+                echo $_GET["mode"];
+            }
+        ?>
+    </title>
+</head>
+
+<body>
+    <div id="banner-wrap">
+    </div>
+    
+    <div id="header-wrap">
+        <ul class="mainMenu">
+            <li style="float: left; width: 80px; margin-right: 5px;">
+        			<img src="img/nonGallery/placeholderlogo.png" width="80" height="40" alt="alt" /> 
+        		</li> 
+
+            <li>
+                <a href="?mode=firstPage">
+                    Esileht
+                </a>
+            </li>
+
+            <li>
+                <a href="?mode=aboutUs">
+                    Meist
+                </a>
+            </li>
+
+            <li>
+                <a href="?mode=galleries">
+                    Galeriid
+                </a>
+            </li>
+
+            <li>
+                <a href="?mode=newsletter">
+                    Uudiskiri
+                </a>
+            </li>
+
+            <li>
+                <a href="?mode=FAQ">
+                    KKK
+                </a>
+            </li>
+
+            <li>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <a href="?mode=logOut">
+                        Logi välja
+                    </a>
+                <?php else: ?>
+                    <a href="?mode=logIn">
+                        Logi sisse
+                    </a>
+                <?php endif; ?>
+            </li>
+
+            <?php if(user_logged_in()): ?>
+                <li style="float: right;">
+                    <a href="?mode=cart">
+                        Ostukorv
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+
+    <div id="main-wrap">

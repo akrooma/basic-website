@@ -4,8 +4,9 @@
 #main-wrap {
 	position: relative;
 	width: 1000px;
+	height: 320px;
 	margin: auto;
-	background-color: whitesmoke;
+	background-color: rgb(227, 235, 233);
 }
 
 /* N-ö poe menüü asukoha määramine.*/

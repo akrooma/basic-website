@@ -1,0 +1,27 @@
+<div class="content">
+	<form action="controller.php?mode=logIn" method="POST">
+  			<table>
+    			<tr>
+      				<td>Kasutajanimi:</td>
+      				<td><input type="text" name="username" value="<?php if(!empty($_POST["username"])) echo htmlspecialchars($_POST["username"]); ?>" /></td>
+    			</tr>
+    			
+    			<tr>
+      				<td>Parool:</td>
+      				<td><input type="password" name="password"/></td>
+   			 	</tr>
+   			 
+    			<tr>
+     				<td colspan="2"><input type="submit" name="login" value="Logi sisse"/></td>
+    			</tr>
+  			</table>
+	</form>
+
+	<?php if (!empty($logInErrors)):?>
+		<?php foreach($logInErrors as $error):?>
+			<p style="color:red; padding:0px;">
+				<?php echo $error; ?>
+			</p>
+		<?php endforeach;?>
+	<?php endif;?>
+</div>
