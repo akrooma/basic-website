@@ -23,11 +23,16 @@
 
 	<?php
 		if (!empty($info)) {
-			echo "<p>Leitud!</p>";
+			echo "<p>\"$find\" leitud!</p>";
 			foreach ($info as $i) {
 				echo "<img src=\"$i\" alt=Katki>";
 			}
+		} else if (!empty($find)) {
+			echo "\"$find\" ei leitud!";
+		} else if ($missing) {
+			echo "Märksõna jäi sisestamata!";
 		}
+
 	?>
 </div>
 

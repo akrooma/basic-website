@@ -14,6 +14,7 @@ function display_aboutUs(){
 
 function display_galleries(){
 	global $placeholderPictures;
+	$missing = false;
 
 	include_once "views/header.html";
 
@@ -21,14 +22,16 @@ function display_galleries(){
 		$find = $_POST['picture'];
 		$info = array();
 
-		if (isset($find)) {
+		if (empty($find)) {
+			$missing = true;
+		} else {
 			foreach($placeholderPictures as $key => $picture){
 				if (strpos($picture["desc"], $find) !== false) {
     				$info[]=$picture["small"];
-				}
+				} 
 			}
 		}
-		
+
 		include_once "galleryDirectory.html";
 
 	} else {
