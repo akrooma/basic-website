@@ -1,0 +1,25 @@
+CREATE TABLE arooma_users (id integer PRIMARY KEY auto_increment, username varchar(10) NOT NULL, password varchar(50) NOT NULL, county varchar (15), city varchar(15), address varchar(50), zip varchar(10), type_id integer)
+
+INSERT INTO arooma_users (username, password, type_id) VALUES
+("boss", SHA1("boss"), 1),
+("kaarel", SHA1("kaarel"), 2)
+
+
+
+
+CREATE TABLE arooma_userType (id integer PRIMARY KEY auto_increment, type varchar(12))
+
+INSERT INTO arooma_userType (type) VALUES
+("admin"),
+("generic")
+
+
+
+
+
+CREATE TABLE arooma_pictures (id integer PRIMARY KEY auto_increment, url varchar(50), alt varchar(50), description varchar(50))
+
+INSERT INTO `arooma_pictures`(`url`, `alt`, `description`) VALUES
+("img/gallery/thumbnail/filler/kindad1.jpg","Katki","värviline"),
+("img/gallery/thumbnail/filler/kindad2.jpg","Katki","minion oranž"),
+("img/gallery/thumbnail/filler/kindad3.jpg","Katki","oranž zebra")

@@ -1,13 +1,35 @@
+<?php 
+	global $link;
+	$sql = "SELECT url, alt, description FROM arooma_pictures";
+	$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
+
+	while($row = mysqli_fetch_assoc($result)){
+		$pictures[] = $row;
+	}
+
+
+?>
+
 <div class="content">
 	<p>
 	Siia tulevad lingid erinevatele galeriidele.
 	</p>
 
-	<?php
-		foreach($placeholderPictures as $key => $picture):
-			echo "<img src=\"{$picture['small']}\" alt=\"{$picture['alt']}\">";
-		endforeach;
+	<?php 
+		foreach ($pictures as $picture) {
+			echo "<img src=\"{$picture['url']}\" alt=\"{$picture['alt']}\">";
+		}
 	?>
+
+	<?php if(admin_rights()): ?>
+		<br>
+		<br>
+        <a href="?mode=addPicture">
+            Lisa pilt
+        </a>
+        <br>
+        <br>
+    <?php endif; ?>
 
 	<form action="controller.php?mode=galleries" method="POST">
   			<table>
@@ -32,9 +54,10 @@
 		} else if ($missing) {
 			echo "Märksõna jäi sisestamata!";
 		}
-
 	?>
 </div>
+
+
 
 
 <!-- <a href=\"?mode=pciture&id={$id}\">  "<img src=\"{$picture['thumb']}\" alt=\"{$picture['alt']}\">" <a href=\"?mode=pilt&id={$id}\"> -->

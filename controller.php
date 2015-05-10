@@ -43,11 +43,23 @@ switch ($mode) {
         break;
     case "logInSuccess":
         include_once "views/header.html";
-        include_once "logInSuccess.html";
+        include_once "views/logInSuccess.html";
         include_once "views/footer.html";
         break;
     case "cart":
         display_cart();
+        break;
+    case "register":
+        display_register();
+        break;
+    case "addPicture":
+        display_addPicture();
+        break;
+    case "userList";
+        display_userList();
+        break;
+    case "profile":
+        display_profile();
         break;
 }
 

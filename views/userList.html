@@ -1,0 +1,48 @@
+<?php 
+	global $link;
+	$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id";
+	$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
+
+	while($row = mysqli_fetch_assoc($result)){
+		$users[] = $row;
+	}
+
+
+?>
+
+<div class="content">
+		<?php foreach($users as $array):?>
+			<p>
+			<?php if(!in_array($_SESSION['user']['username'], $array)) :?>
+				Profiil: <?php echo $array['username']; ?>
+
+				<table>
+			   		<tr>
+			   			<td>Maakond:</td>
+			   			<td><?php echo $array['county']; ?></td>
+			   		</tr>
+
+			   		<tr>
+			   			<td>Linn:</td>
+			   			<td><?php echo $array['city']; ?></td>
+			   		</tr>
+
+			   		<tr>
+			   			<td>Aadress:</td>
+			   			<td><?php echo $array['address']; ?></td>
+			   		</tr>
+
+			   		<tr>
+			   			<td>Postiindeks:</td>
+			   			<td><?php echo $array['city']; ?></td>
+			   		</tr>
+
+			   		<tr>
+			   			<td>Kasutaja õigused:</td>
+			   			<td><?php echo $array['type']; ?></td>
+			   		</tr>
+			   	</table>
+		   <?php endif;?>
+		   </p>
+		<?php endforeach;?>
+</div>

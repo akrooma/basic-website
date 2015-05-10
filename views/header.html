@@ -4,16 +4,16 @@
 
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="firstPageGeneric.css">
+    <link rel="stylesheet" type="text/css" href="css/firstPageGeneric.css">
     <?php
         if((!isset($_GET["mode"])) || ($_GET["mode"]=="firstPage")){
-            echo '<link rel="stylesheet" type="text/css" href="firstPageSpecific.css">';
+            echo '<link rel="stylesheet" type="text/css" href="css/firstPageSpecific.css">';
         }
     ?>
-    <link rel="stylesheet" type="text/css" href="FAQspecific.css">
+    <link rel="stylesheet" type="text/css" href="css/FAQspecific.css">
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="genericJS.js"></script>
-    <script type="text/javascript" src="shopBannerChanger.js"></script>
+    <script type="text/javascript" src="js/genericJS.js"></script>
+    <script type="text/javascript" src="js/shopBannerChanger.js"></script>
     <title>
         <?php
             if(!isset($_GET["mode"])){
@@ -76,6 +76,14 @@
                     </a>
                 <?php endif; ?>
             </li>
+
+            <?php if(user_logged_in()): ?>
+                <li>
+                    <a href="?mode=profile">
+                        Profiil
+                    </a>
+                </li>
+            <?php endif; ?>
 
             <?php if(user_logged_in()): ?>
                 <li style="float: right;">

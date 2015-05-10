@@ -1,0 +1,37 @@
+<div class = "content">
+	<?php if(admin_rights()): ?>
+		<br>
+		<br>
+        <a href="?mode=userList">
+            Kasutajate nimekiri
+        </a>
+        <br>
+        <br>
+    <?php endif; ?>
+
+   	<p>
+   	Profiil: <?php echo $_SESSION['user']['username']; ?>
+   	</p>
+
+   	<table>
+   		<tr>
+   			<td>Maakond:</td>
+   			<td><?php echo $_SESSION['user']['county']; ?></td>
+   		</tr>
+
+   		<tr>
+   			<td>Linn:</td>
+   			<td><?php echo $_SESSION['user']['city']; ?></td>
+   		</tr>
+
+   		<tr>
+   			<td>Aadress:</td>
+   			<td><?php echo $_SESSION['user']['address']; ?></td>
+   		</tr>
+
+   		<tr>
+   			<td>Postiindeks:</td>
+   			<td><?php echo $_SESSION['user']['zip']; ?></td>
+   		</tr>
+   	</table>
+</div>	

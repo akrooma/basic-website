@@ -17,6 +17,10 @@
   			</table>
 	</form>
 
+  <a href="?mode=register">
+      Registreeru
+  </a>
+
 	<?php if (!empty($logInErrors)):?>
 		<?php foreach($logInErrors as $error):?>
 			<p style="color:red; padding:0px;">
@@ -24,4 +28,12 @@
 			</p>
 		<?php endforeach;?>
 	<?php endif;?>
+
+  <?php if (!empty($registerErrors)):?>
+    <?php foreach($registerErrors as $error):?>
+      <p style="color:green; padding:0px;">
+        <?php echo $error; ?>
+      </p>
+    <?php endforeach;?>
+  <?php endif;?>
 </div>

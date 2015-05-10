@@ -1,0 +1,33 @@
+<div class="content">
+	<form action="controller.php?mode=addPicture" method="POST">
+	  	<table>
+		    <tr>
+		    	<td>Pildi url:</td>
+			    <td><input type="text" name="source"/></td>
+			     	
+			</tr>
+
+			<tr>
+			    <td>Alt:</td>
+			    <td><input type="text" name="alternative"/></td>
+		    </tr>
+
+		    <tr>
+			    <td>Kirjeldus:</td>
+			    <td><input type="text" name="description"/></td>
+		    </tr>
+
+		    <tr>
+		      	<td colspan="2"><input type="submit" value="Lisa"/></td>
+		    </tr>
+	  	</table>
+	</form>
+
+	<?php if (!empty($errors)):?>
+		<?php foreach($errors as $error):?>
+			<p style="color:red; padding:0px;">
+				<?php echo $error; ?>
+			</p>
+		<?php endforeach;?>
+	<?php endif;?>
+</div>
