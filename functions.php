@@ -54,66 +54,67 @@ function display_FAQ(){
 }
 
 function display_logIn(){
-	global $link;
-	global $registerErrors;
 
-	include_once "views/header.html";
+	if (!user_logged_in()){
+		global $link;
+		global $registerErrors;
 
-	if(!empty($_POST)){
-		$users = array();
-		$logInErrors = array();
+		include_once "views/header.html";
 
-		if(empty($_POST['username'])) {
-			$logInErrors[]="Kasutajanimi on puudu!";		
-		}
-		
-		if(empty($_POST['password'])) {
-			$logInErrors[]="Parool on puudu!";	
-		}
-		
-		if (empty($logInErrors)) {
-			$u = $_POST['username'];
-			$p = $_POST['password'];
+		if(!empty($_POST)){
+			$users = array();
+			$logInErrors = array();
 
-			$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id AND username = '$u' AND password = SHA1('$p')";
-			$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
-
-			while($row = mysqli_fetch_assoc($result)){
-				$user[] = $row;
+			if(empty($_POST['username'])) {
+				$logInErrors[]="Kasutajanimi on puudu!";		
 			}
+			
+			if(empty($_POST['password'])) {
+				$logInErrors[]="Parool on puudu!";	
+			}
+			
+			if (empty($logInErrors)) {
+				$u = mysqli_real_escape_string($link, $_POST['username']);
+				$p = mysqli_real_escape_string($link, $_POST['password']);
 
-			if (empty($user)) {
-				$logInErrors[] = "Kasutajanimi või parool olid valed!";
-				include_once "views/logIn.html";
-			} else {
-				foreach ($user as $key) {
+				$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id AND username = '$u' AND password = SHA1('$p')";
+				$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
+
+				while($row = mysqli_fetch_assoc($result)){
+					$user = $row;
+				}
+
+				if (empty($user)) {
+					$logInErrors[] = "Kasutajanimi või parool olid valed!";
+					include_once "views/logIn.html";
+				} else {
 					$_SESSION['user'] = array(
-						'username' => $key['username'],
-						'county' => $key['county'],
-						'city' => $key['city'],
-						'address' => $key['address'],
-						'zip' => $key['zip'],
-						'type' => $key['type']			
+						'username' => $user['username'],
+						'county' => $user['county'],
+						'city' => $user['city'],
+						'address' => $user['address'],
+						'zip' => $user['zip'],
+						'type' => $user['type']			
 						);
 
 					header("Location: controller.php?mode=logInSuccess");
-					exit(0);
+
 				}
-				
+
+			} else {
+				include_once "views/logIn.html";
 			}
 
 		} else {
 			include_once "views/logIn.html";
 		}
 
+		include_once "views/footer.html";
+
+		//var_dump($registerErrors);
+		//print_r($user);
 	} else {
-		include_once "views/logIn.html";
-	}
-
-	include_once "views/footer.html";
-
-	//var_dump($registerErrors);
-	//print_r($user);
+		header("Location: controller.php?mode=profile");	}
 }
 
 function display_cart(){
@@ -148,7 +149,7 @@ function display_register(){
 
 		if(empty($_POST['username'])) {
 			$registerErrors[] = "Kasutajanimi jäi sisestamata!";
-		} else if (strlen($_POST['password'])>10) {
+		} else if (strlen($_POST['username'])>10) {
 			$registerErrors[] = "Kasutajanimi on liiga pikk! Maksimum pikkus 10 märki.";
 		}
 
@@ -180,12 +181,12 @@ function display_register(){
 
 			if ($result){
 				$registerErrors[] = "Registreerimine õnnestus!";
-				header("Location: controller.php?mode=logIn");
+				//header("Location: controller.php?mode=logIn");
 				//Kui kasutada headeri pläusti, siis url on "korrektne", aga $registerErrors jääb tühjaks. 
 				//Siiski oleks vaja, et seal oleks "registreerimine õnnestus".
 				//Probleem probabli selles, et nupu vajutamisel läheb inf mode=register peale ja ei saada seda mode=login peale.
 
-				//include_once "views/logIn.html";
+				include_once "views/logIn.html";
 				//include once puhul jääb url n-ö valeks, e url mode on register, mitte log in. Samas sisuvärk on log in mant.
 			}
 		}
@@ -207,38 +208,73 @@ function display_addPicture(){
 		if(!empty($_POST)){
 			$errors = array();
 
-			if(empty($_POST['source'])){
-				$errors[] = "Pildi url jäi sisestamata!";
-			}
-
-			if(empty($_POST['alternative'])){
+			if(empty($_POST['alt'])){
 				$errors[] = "Pildi alt atribuut jäi sisestamata!";
 			}
 
 			if (empty($errors)) {
-				$source = $_POST['source'];
+				//Faili ülesse laadimise näitekood: http://www.w3schools.com/php/php_file_upload.asp
 
+				$target_dir = "img/gallery/thumbnail/filler/";
+				$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+				$uploadOk = true;
+				$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+				// Check if image file is a actual image or fake image
+				if(isset($_POST["submit"])) {
+				    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+				    if($check !== false) {
+				        $errors[] = "Fail ei ole pilt - " . $check["mime"] . ".";
+				        $uploadOk = true;
+				    } else {
+				        $errors[] = "Fail ei ole pilt.";
+				        $uploadOk = false;
+				    }
+				}
+				// Check if file already exists
+				if ($target_file != $target_dir && file_exists($target_file)) {
+				    $errors[] = "Anna andeks, see pilt juba eksisteerib.";
+				    $uploadOk = false;
+				}
+				// Check file size
+				if ($_FILES["fileToUpload"]["size"] > 500000) {
+				    $errors[] = "Anna andeks, sinu fail on liiga massiivne.";
+				    $uploadOk = false;
+				}
+				// Allow certain file formats
 				$allowedExtensions = array("jpg", "jpeg", "png");
-				$extension = end(explode(".", $source));
+				if (!in_array($imageFileType, $allowedExtensions)) {
+				    $errors[] = "Anna andeks, ainult JPG, JPEG, PNG failid on lubatud.";
+				    $uploadOk = false;
+				}
+				// Check if $uploadOk is set to false by an error
+				if ($uploadOk == false) {
+				    $errors[] = "Anna andeks, sinu fail ei laetud ülesse.";
+				// if everything is ok, try to upload file
+				} else {
+				    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				        echo "Fail ". basename( $_FILES["fileToUpload"]["name"]). " on ülesse laetud.";
+				    } else {
+				        $errors[] = "Anna andeks, faili ülesselaadimisel tekkis probleem.";
+				    }
+				}
 
-				if (in_array($extension, $allowedExtensions)) {
+				//var_dump($errors);
+				if (empty($errors)) {
 					global $link;
 
-					$src = mysqli_real_escape_string($link, $_POST['source']);
-					$alt = mysqli_real_escape_string($link, $_POST['alternative']);
+					$alt = mysqli_real_escape_string($link, $_POST['alt']);
 					$dsc = mysqli_real_escape_string($link, $_POST['description']);
 
-					$sql = "INSERT INTO arooma_pictures (url, alt, description) VALUES ('$src', '$alt', '$dsc')";
+					$sql = "INSERT INTO arooma_pictures (url, alt, description) VALUES ('$target_file', '$alt', '$dsc')";
 					$result = mysqli_query($link, $sql);
 
 					if ($result){
-						include_once "views/galleryDirectory.html";
+						include_once "views/addPicture.html";
 					}
-
 				} else {
-					$errors[] = "Lubatud on ainult jpg, jpeg ja png faililaiendiga pildid!";
 					include_once "views/addPicture.html";
 				}
+					
 
 			} else {
 				include_once "views/addPicture.html";
@@ -254,6 +290,31 @@ function display_addPicture(){
 
 	} else {
 		display_logIn();
+	}
+}
+
+function save_picture(){
+	global $link;
+	$id = mysqli_real_escape_string($link, $_POST['id']);
+	$alt = mysqli_real_escape_string($link, $_POST['alt']);
+	$dsc = mysqli_real_escape_string($link, $_POST['description']);
+
+	$sql = "UPDATE arooma_pictures SET alt='$alt', description='$dsc' WHERE id=$id";
+	var_dump($sql);
+	$result = mysqli_query($link, $sql);
+
+	if ($result){
+		header("Location: controller.php?mode=galleries");
+	}
+}
+
+function display_changePicture(){
+	if (admin_rights()) {
+		include_once "views/header.html";
+		include_once "views/changePicture.html";
+		include_once "views/footer.html";
+	} else {
+		display_profile();
 	}
 }
 
@@ -279,12 +340,8 @@ function display_profile(){
 
 function logOut(){
 	destroy_session();
-	include_once "views/header.html";
-	include_once "views/logOutSuccess.html";
-	include_once "views/footer.html";
+	header("Location: controller.php?mode=logIn");
 }
-
-
 
 function in_multidim_array($array, $item){
 	foreach ($array as $key) {
@@ -293,17 +350,6 @@ function in_multidim_array($array, $item){
 		}
 	}
 	return false;
-}
-
-function db_connection(){
-	global $link;
-	$user = "test";
-	$pass = "t3st3r123";
-	$db = "test";
-	$host = "localhost";
-
-	$link = mysqli_connect($host, $user, $pass, $db) or die("ei saanud ühendatud - ");
-	mysqli_query($link, "SET CHARACTER SET UTF8")or die( $sql. " - ". mysqli_error($link));
 }
 
 function user_logged_in(){

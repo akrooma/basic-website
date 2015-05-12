@@ -1,17 +1,8 @@
 <?php
+require_once("database_connection.php");
 require_once("functions.php");
+
 start_session();
-
-$placeholderPictures=array(
-  array("small"=>"img/gallery/thumbnail/filler/kindad1.jpg", "alt"=>"Katki", "desc" => "värviline"),
-  array("small"=>"img/gallery/thumbnail/filler/kindad2.jpg", "alt"=>"Katki", "desc" => "minion oranž"),
-  array("small"=>"img/gallery/thumbnail/filler/kindad3.jpg", "alt"=>"Katki", "desc" => "oranž zebra"),
-  array("small"=>"img/gallery/thumbnail/filler/kindad4.jpg", "alt"=>"Katki", "desc" => "beež"),
-  array("small"=>"img/gallery/thumbnail/filler/kindad5.jpg", "alt"=>"Katki", "desc" => "roosad roosid"),
-  array("small"=>"img/gallery/thumbnail/filler/kindad6.jpg", "alt"=>"Katki", "desc" => "etno")
- );
-
-
 
 $mode="";
 
@@ -60,6 +51,12 @@ switch ($mode) {
         break;
     case "profile":
         display_profile();
+        break;
+    case "changePicture":
+        display_changePicture();
+        break;
+    case "savePicture":
+        save_picture();
         break;
 }
 

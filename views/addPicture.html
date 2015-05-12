@@ -1,26 +1,22 @@
 <div class="content">
-	<form action="controller.php?mode=addPicture" method="POST">
+	<form action="controller.php?mode=addPicture" method="POST" enctype="multipart/form-data">
 	  	<table>
 		    <tr>
-		    	<td>Pildi url:</td>
-			    <td><input type="text" name="source"/></td>
-			     	
-			</tr>
-
-			<tr>
-			    <td>Alt:</td>
-			    <td><input type="text" name="alternative"/></td>
+		      <td>Alt:</td>
+		      <td><input type="text" name="alt"/></td>
 		    </tr>
-
 		    <tr>
-			    <td>Kirjeldus:</td>
-			    <td><input type="text" name="description"/></td>
+		      <td>Kirjeldus:</td>
+		      <td><input type="text" name="description"/></td>
 		    </tr>
-
 		    <tr>
-		      	<td colspan="2"><input type="submit" value="Lisa"/></td>
+		      <td>Pilt:</td>
+		      <td><input type="file" name="fileToUpload" id="fileToUpload"/></td>
 		    </tr>
-	  	</table>
+		    <tr>
+		      <td colspan="2"><input type="submit" value="Lae ülesse"/></td>
+		    </tr>
+		 </table>
 	</form>
 
 	<?php if (!empty($errors)):?>

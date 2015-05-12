@@ -1,6 +1,6 @@
 <?php 
 	global $link;
-	$sql = "SELECT url, alt, description FROM arooma_pictures";
+	$sql = "SELECT id, url, alt, description FROM arooma_pictures";
 	$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
 
 	while($row = mysqli_fetch_assoc($result)){
@@ -17,8 +17,13 @@
 
 	<?php 
 		foreach ($pictures as $picture) {
-			echo "<img src=\"{$picture['url']}\" alt=\"{$picture['alt']}\">";
+			if (admin_rights()) {
+				echo "<a href=\"?mode=changePicture&id={$picture['id']}\"><img src=\"{$picture['url']}\" alt=\"{$picture['alt']}\"></a>";
+			} else {
+				echo "<img src=\"{$picture['url']}\" alt=\"{$picture['alt']}\">";
+			}
 		}
+
 	?>
 
 	<?php if(admin_rights()): ?>

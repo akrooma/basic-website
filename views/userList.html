@@ -1,48 +1,64 @@
 <?php 
 	global $link;
-	$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id";
+	/*$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id";
 	$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
 
 	while($row = mysqli_fetch_assoc($result)){
 		$users[] = $row;
-	}
+	}*/
 
+
+
+
+
+	$stmt = mysqli_prepare($link, "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id");
+	// seome muutujad
+	//mysqli_stmt_bind_param($stmt, "i", $_GET['id']);
+
+	// käivita!
+	mysqli_stmt_execute($stmt);
+	// võta väärtused
+	mysqli_stmt_bind_result($stmt, $user['username'], $user['county'],$user['city'],$user['address'],$user['zip'],$user['type']);
+	// võta rida
+
+	//var_dump($picture);
 
 ?>
 
 <div class="content">
-		<?php foreach($users as $array):?>
+	<?php while(mysqli_stmt_fetch($stmt)) :?>
+		<?php if(!in_array($_SESSION['user']['username'], $user)) :?>
+			<br>
 			<p>
-			<?php if(!in_array($_SESSION['user']['username'], $array)) :?>
-				Profiil: <?php echo $array['username']; ?>
+			Profiil: <?php echo $user['username']; ?>
+			</p>
+			<table>
+		   		<tr>
+		   			<td>Maakond:</td>
+		   			<td><?php echo $user['county']; ?></td>
+		   		</tr>
 
-				<table>
-			   		<tr>
-			   			<td>Maakond:</td>
-			   			<td><?php echo $array['county']; ?></td>
-			   		</tr>
+		   		<tr>
+		   			<td>Linn:</td>
+		   			<td><?php echo $user['city']; ?></td>
+		   		</tr>
 
-			   		<tr>
-			   			<td>Linn:</td>
-			   			<td><?php echo $array['city']; ?></td>
-			   		</tr>
+		   		<tr>
+		   			<td>Aadress:</td>
+		   			<td><?php echo $user['address']; ?></td>
+		   		</tr>
 
-			   		<tr>
-			   			<td>Aadress:</td>
-			   			<td><?php echo $array['address']; ?></td>
-			   		</tr>
+		   		<tr>
+		   			<td>Postiindeks:</td>
+		   			<td><?php echo $user['city']; ?></td>
+		   		</tr>
 
-			   		<tr>
-			   			<td>Postiindeks:</td>
-			   			<td><?php echo $array['city']; ?></td>
-			   		</tr>
-
-			   		<tr>
-			   			<td>Kasutaja õigused:</td>
-			   			<td><?php echo $array['type']; ?></td>
-			   		</tr>
-			   	</table>
-		   <?php endif;?>
-		   </p>
-		<?php endforeach;?>
+		   		<tr>
+		   			<td>Kasutaja õigused:</td>
+		   			<td><?php echo $user['type']; ?></td>
+		   		</tr>
+		   	</table>
+	   <?php endif;?>
+	<?php endwhile;?>
+	<?php mysqli_stmt_close($stmt); ?>
 </div>
