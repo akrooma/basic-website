@@ -3,7 +3,6 @@
 
 	$s = str_replace(' ', '', $_GET['id']);
 	$id = mysqli_real_escape_string($link, $s);
-	//var_dump($id);
 
 	if (!is_numeric($id)) {
 		header("Location: controller.php?mode=galleries");
@@ -15,7 +14,6 @@
 	while($row = mysqli_fetch_assoc($result)){
 		$picture = $row;
 	}
-	//var_dump($picture);
 	
 	if (!$picture) {
 		header("Location: controller.php?mode=galleries");

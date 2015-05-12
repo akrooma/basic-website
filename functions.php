@@ -110,9 +110,7 @@ function display_logIn(){
 		}
 
 		include_once "views/footer.html";
-
-		//var_dump($registerErrors);
-		//print_r($user);
+		
 	} else {
 		header("Location: controller.php?mode=profile");	}
 }
@@ -181,13 +179,7 @@ function display_register(){
 
 			if ($result){
 				$registerErrors[] = "Registreerimine õnnestus!";
-				//header("Location: controller.php?mode=logIn");
-				//Kui kasutada headeri pläusti, siis url on "korrektne", aga $registerErrors jääb tühjaks. 
-				//Siiski oleks vaja, et seal oleks "registreerimine õnnestus".
-				//Probleem probabli selles, et nupu vajutamisel läheb inf mode=register peale ja ei saada seda mode=login peale.
-
 				include_once "views/logIn.html";
-				//include once puhul jääb url n-ö valeks, e url mode on register, mitte log in. Samas sisuvärk on log in mant.
 			}
 		}
 
@@ -196,9 +188,6 @@ function display_register(){
 	}
 
 	include_once "views/footer.html";
-
-	//var_dump(in_array($_POST['username'], $userNames));
-	//var_dump(in_multidim_array($userNames, $_POST['username']));
 }
 
 function display_addPicture(){
@@ -258,7 +247,6 @@ function display_addPicture(){
 				    }
 				}
 
-				//var_dump($errors);
 				if (empty($errors)) {
 					global $link;
 
@@ -279,8 +267,6 @@ function display_addPicture(){
 			} else {
 				include_once "views/addPicture.html";
 			}
-
-			
 
 		} else {
 			include_once "views/addPicture.html";	

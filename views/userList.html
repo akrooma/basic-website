@@ -7,10 +7,6 @@
 		$users[] = $row;
 	}*/
 
-
-
-
-
 	$stmt = mysqli_prepare($link, "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id");
 	// seome muutujad
 	//mysqli_stmt_bind_param($stmt, "i", $_GET['id']);
@@ -20,8 +16,6 @@
 	// võta väärtused
 	mysqli_stmt_bind_result($stmt, $user['username'], $user['county'],$user['city'],$user['address'],$user['zip'],$user['type']);
 	// võta rida
-
-	//var_dump($picture);
 
 ?>
 
