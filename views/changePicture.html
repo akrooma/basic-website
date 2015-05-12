@@ -1,18 +1,27 @@
 <?php 
 	global $link;
-	/*$sql = "SELECT id, url, alt, description FROM arooma_pictures WHERE id=".$_GET['id'];
+
+	$s = str_replace(' ', '', $_GET['id']);
+	$id = mysqli_real_escape_string($link, $s);
+	//var_dump($id);
+
+	if (!is_numeric($id)) {
+		header("Location: controller.php?mode=galleries");
+	}
+
+	$sql = "SELECT id, url, alt, description FROM arooma_pictures WHERE id=$id";
 	$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
 
 	while($row = mysqli_fetch_assoc($result)){
 		$picture = $row;
 	}
 	//var_dump($picture);
-
+	
 	if (!$picture) {
 		header("Location: controller.php?mode=galleries");
+	}
 
-	}*/
-
+	/*
 	// ettevalmistus
 	$stmt = mysqli_prepare($link, "SELECT id, url, alt, description FROM arooma_pictures WHERE id=?");
 	// seome muutujad
@@ -29,10 +38,11 @@
 
 	mysqli_stmt_close($stmt);
 
-		if (!$picture) {
-			header("Location: controller.php?mode=galleries");
+	if (!$picture) {
+		header("Location: controller.php?mode=galleries");
 
-		}
+	}
+	*/
 
 ?>
 
@@ -57,12 +67,4 @@
 		    </tr>
 		 </table>
 	</form>
-
-	<?php if (!empty($errors)):?>
-		<?php foreach($errors as $error):?>
-			<p style="color:red; padding:0px;">
-				<?php echo $error; ?>
-			</p>
-		<?php endforeach;?>
-	<?php endif;?>
 </div>
