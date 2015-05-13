@@ -6,8 +6,6 @@
 	while($row = mysqli_fetch_assoc($result)){
 		$pictures[] = $row;
 	}
-
-
 ?>
 
 <div class="content">
@@ -33,6 +31,9 @@
             Lisa pilt
         </a>
         <br>
+        <br>
+       	Pildi info muutmiseks kliki pildil!
+       	<br>
         <br>
     <?php endif; ?>
 
@@ -61,8 +62,3 @@
 		}
 	?>
 </div>
-
-
-
-
-<!-- <a href=\"?mode=pciture&id={$id}\">  "<img src=\"{$picture['thumb']}\" alt=\"{$picture['alt']}\">" <a href=\"?mode=pilt&id={$id}\"> -->

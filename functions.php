@@ -77,17 +77,15 @@ function display_logIn(){
 				$u = mysqli_real_escape_string($link, $_POST['username']);
 				$p = mysqli_real_escape_string($link, $_POST['password']);
 
-				$sql = "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id AND username = '$u' AND password = SHA1('$p')";
-				$result = mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
+				$stmt = mysqli_prepare($link, "SELECT username, county, city, address, zip, type FROM arooma_users, arooma_userType WHERE arooma_userType.id = arooma_users.type_id AND username = ? AND password = SHA1(?)");
+				mysqli_stmt_bind_param($stmt, "ss", $u, $p);
+				mysqli_stmt_execute($stmt);
+				mysqli_stmt_store_result($stmt);
 
-				while($row = mysqli_fetch_assoc($result)){
-					$user = $row;
-				}
+				if (mysqli_stmt_num_rows($stmt) > 0) {
+					mysqli_stmt_bind_result($stmt, $user['username'], $user['county'],$user['city'],$user['address'],$user['zip'],$user['type']);
+					mysqli_stmt_fetch($stmt);
 
-				if (empty($user)) {
-					$logInErrors[] = "Kasutajanimi või parool olid valed!";
-					include_once "views/logIn.html";
-				} else {
 					$_SESSION['user'] = array(
 						'username' => $user['username'],
 						'county' => $user['county'],
@@ -97,8 +95,14 @@ function display_logIn(){
 						'type' => $user['type']			
 						);
 
+					mysqli_stmt_close($stmt);
+
 					header("Location: controller.php?mode=logInSuccess");
 
+				} else {
+					mysqli_stmt_close($stmt);
+					$logInErrors[] = "Kasutajanimi või parool olid valed!";
+					include_once "views/logIn.html";
 				}
 
 			} else {
@@ -286,7 +290,6 @@ function save_picture(){
 	$dsc = mysqli_real_escape_string($link, $_POST['description']);
 
 	$sql = "UPDATE arooma_pictures SET alt='$alt', description='$dsc' WHERE id=$id";
-	var_dump($sql);
 	$result = mysqli_query($link, $sql);
 
 	if ($result){
